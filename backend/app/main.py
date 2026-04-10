@@ -5,7 +5,6 @@ import uuid
 import os
 import json
 import numpy as np
-import tensorflow as tf
 
 from .preprocessing import preprocess_image
 from .gemini_service import ask_gemini_vision
@@ -32,16 +31,10 @@ except Exception:
 local_model = None
 
 def get_model():
-    global local_model
-    if local_model is None:
-        try:
-            model_path = os.path.join(MODEL_DIR, "stage1_best.keras")
-            print(f"Loading local model from {model_path}...")
-            local_model = tf.keras.models.load_model(model_path)
-            print("Local model loaded successfully!")
-        except Exception as e:
-            print(f"Error loading model: {e}")
-    return local_model
+    return None
+
+def predict(image):
+    return "sunflower"
 
 @app.get("/health")
 def health_check():
@@ -63,55 +56,13 @@ def identify_flower(file: UploadFile = File(...)):
     prediction_result = None
     
     if model and CLASS_NAMES:
-        try:
-            # Inference Block
-            img_tensor = preprocess_image(image_bytes)
-            preds = model.predict(img_tensor, verbose=0)[0]
-            
-            top_indices = np.argsort(preds)[::-1]
-            top1_idx = top_indices[0]
-            top2_idx = top_indices[1]
-            
-            top1_prob = float(preds[top1_idx])
-            top2_prob = float(preds[top2_idx])
-            top1_class = CLASS_NAMES[top1_idx]
-            
-            # --- QUICK DEBUG ---
-            print("\n" + "="*40)
-            print(f"Model confidence (Top 1): {top1_prob:.4f} ({top1_class})")
-            print(f"Model Top 2 Difference : {(top1_prob - top2_prob):.4f}")
-            
-            # --- FINAL PRO SOLUTION LOGIC ---
-            if top1_prob > 0.85 and (top1_prob - top2_prob) > 0.3:
-                print("Decision: Using Local Model!")
-                print("Gemini called? False")
-                prediction_result = {
-                    "rank": 1,
-                    "confidence": top1_prob,
-                    "is_uncertain": False,
-                    "verified_by_gemini": False,
-                    "species": {
-                        "common_name": top1_class.capitalize(),
-                        "scientific_name": "Unknown",
-                        "family": "Unknown"
-                    },
-                    "details": {
-                        "distinguishing_features": ["(Local inference - data limited)"],
-                        "native_region": "Unknown",
-                        "bloom_season": "Unknown",
-                        "reference_image_url": ""
-                    }
-                }
-            else:
-                print("Decision: Confidence/Gap too low. Falling back to Gemini.")
-                print("Gemini called? True")
-                gemini_called = True
-        except Exception as e:
-            print(f"Local model error: {e}")
-            gemini_called = True
+        pass # Not using local model anymore
     else:
+        # User requested dummy model to test deployment
+        dummy_result = predict(image_bytes)
+        print(f"Dummy model predicted: {dummy_result}")
         gemini_called = True
-        print("Gemini called? True (Local model unavailable)")
+        print("Gemini called? True (Local model replaced with dummy)")
         
     if gemini_called:
         print("Calling Gemini API...")
