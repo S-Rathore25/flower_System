@@ -1,14 +1,7 @@
 fastapi
 uvicorn
 python-multipart
-tensorflow-cpu
-numpy
 pillow
-pydantic
-sqlalchemy
-psycopg2-binary
-albumentations
-scikit-learn
-opencv-python-headless
-python-dotenv
+numpy
 google-generativeai
+python-dotenv
