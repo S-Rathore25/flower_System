@@ -65,7 +65,7 @@ export default function App() {
 
     try {
       // Pointing to FastAPI backend
-      const response = await axios.post('http://localhost:8000/api/v1/identify', formData);
+      const response = await axios.post('https://flower-system-0-1.onrender.com/api/v1/identify', formData);
       setResults(response.data.predictions);
     } catch (err) {
       setError(err.response?.data?.detail || "Connection Error. Is the backend running?");
