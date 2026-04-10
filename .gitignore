@@ -1,0 +1,25 @@
+# Environment variables
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+backend/venv/
+
+# Node
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
+# Large files/Models
+models/*.keras
+data/
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
