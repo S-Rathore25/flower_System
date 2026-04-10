@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+python-multipart
+tensorflow
+numpy
+pillow
+pydantic
+sqlalchemy
+psycopg2-binary
+albumentations
+scikit-learn
+opencv-python-headless
+python-dotenv
+google-generativeai
