@@ -108,8 +108,8 @@ If unsure, still return best guess but keep fields filled.
                 "parts": [
                     {"text": prompt},
                     {
-                        "inline_data": {
-                            "mime_type": "image/jpeg",
+                        "inlineData": {
+                            "mimeType": "image/jpeg",
                             "data": img_b64
                         }
                     }
